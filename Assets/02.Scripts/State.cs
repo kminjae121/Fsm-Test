@@ -1,12 +1,32 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
-public abstract class State<T> where T: class
+public class State<T> where T : Enum 
 {
-    public abstract void Enter(T obj);
+    protected Agent _agent;
+    protected StateMachine<T> _stateMachine;
 
-    public abstract void Execute(T obj);
+    public State(Agent _onwer, StateMachine<T> state)
+    {
+        _agent = _onwer;
+        _stateMachine = state;
+    }
 
-    public abstract void Exit(T obj);
+
+    public virtual void UpdateState()
+    {
+
+    }
+
+    public virtual void Enter()
+    {
+    }
+    public virtual void Exit()
+    {
+    }
+
+    public virtual void LateUpdateState()
+    {
+
+    } 
 }

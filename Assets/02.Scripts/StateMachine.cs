@@ -1,36 +1,29 @@
-using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
-public class StateMachine<T> where T : class
+public class StateMachine<T> where T : Enum // 여기도 T는 Enum만 받아온다.
 {
-    private T owenerObj;
-    private State<T> currentState;
+    public Dictionary<T, State<T>> stateDict = new Dictionary<T, State<T>>(); 
+    public State<T> CurrentState { get; private set; }
 
-    public void SetState(T owner, State<T> obj)
+    private Agent _agent;
+
+    public void InitInitialize(T state, Agent agent)
     {
-        owenerObj = owner;
-
-        ChangeState(obj);    
+        _agent = agent;
+        CurrentState = stateDict[state];
+        CurrentState.Enter();
+    }
+    public void ChangeState(T changeState)
+    {
+        CurrentState.Exit();
+        CurrentState = stateDict[changeState];
+        CurrentState.Enter();
     }
 
-    public void Execute()
+    public void AddState(T stateEnum, State<T> state)
     {
-        if (currentState != null)
-            currentState.Execute(owenerObj);
-    }
-
-    public void ChangeState(State<T> newState)
-    {
-
-        if (newState == null)
-            return;
-        else
-        {
-            currentState.Exit(owenerObj);
-        }
-
-        currentState = newState;
-        currentState.Enter(owenerObj);
+        stateDict.Add(stateEnum, state);
     }
 }

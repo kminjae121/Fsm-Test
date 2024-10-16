@@ -1,13 +1,13 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IdleState : State<PlayerState>
+public class WalkState : State<PlayerState>
 {
     private Rigidbody2D _rigid;
     private Agent _owner;
-    public IdleState(Agent _onwer, StateMachine<PlayerState> state) : base(_onwer, state)
+
+    public WalkState(Agent _onwer, StateMachine<PlayerState> state) : base(_onwer, state)
     {
         _owner = _onwer;
     }
@@ -16,15 +16,17 @@ public class IdleState : State<PlayerState>
     {
         _rigid = _owner.GetComponent<Rigidbody2D>();
     }
+
     public override void UpdateState()
     {
-        Debug.Log("æ∆¿’ª–");
-        _rigid.velocity = Vector2.zero;
-        
+        Debug.Log("≥≠ ∞»∞Ì ¿÷ø¿");
+
+        _rigid.AddForce(Vector2.up * 3 * 1, ForceMode2D.Impulse);
     }
 
     public override void Exit()
     {
-        
+       
     }
+
 }

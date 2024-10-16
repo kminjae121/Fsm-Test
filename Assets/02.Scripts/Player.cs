@@ -5,40 +5,44 @@ using UnityEngine;
 
 public enum PlayerState
 {
-    RunState = 0,
+    RunState,
     IdleState,
 }
-public class Player : MonoBehaviour
+public class Player : Agent
 {
-    private float speed;
-
     public PlayerState playerState { get; set; }
-    private State<Player>[] state;
+    public State<PlayerState> state;
+    
+    public StateMachine<PlayerState> stateMachine;
 
-    private StateMachine<Player> stateMachine; 
-
-    private void Awake()
+    public override void Awake()
     {
-        stateMachine = new StateMachine<Player>();
-        state = new State<Player>[2];
+        Speed = 10;
+        Hp = 10;
+        AttackDamage = 20;
 
-        state[(int)PlayerState.RunState] = new RunState();
-        state[(int)PlayerState.IdleState] = new IdleState();
+
+        stateMachine = new StateMachine<PlayerState>();
+
+        stateMachine.AddState(PlayerState.IdleState, new IdleState(this, stateMachine));
+        stateMachine.AddState(PlayerState.RunState, new WalkState(this, stateMachine));
+        stateMachine.InitInitialize(PlayerState.IdleState, this);
+        base.Awake();
     }
 
     private void Start()
     {
-        stateMachine.SetState(this, state[(int)PlayerState.IdleState]);
     }
 
 
     private void Update()
     {
-        stateMachine.Execute();
-    }
+        Debug.Log(stateMachine.CurrentState);
+        stateMachine.CurrentState.UpdateState();
 
-    public void ChangeState(PlayerState Currentstate)
-    {
-        stateMachine.ChangeState(state[(int)Currentstate]);
+        if (Input.GetKey(KeyCode.W))
+            stateMachine.ChangeState(playerState = PlayerState.RunState);
+        else
+            stateMachine.ChangeState(playerState = PlayerState.IdleState);
     }
 }
