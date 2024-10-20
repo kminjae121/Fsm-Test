@@ -19,7 +19,7 @@ public class WalkState : State<PlayerState>
 
     public override void UpdateState()
     {
-        Debug.Log("≥≠ ∞»∞Ì ¿÷ø¿");
+        Debug.Log("≥≠ ∞»∞Ì ¿÷ø¿");   
 
         _rigid.AddForce(Vector2.up * 3 * 1, ForceMode2D.Impulse);
     }
