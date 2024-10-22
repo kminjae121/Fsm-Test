@@ -7,6 +7,7 @@ public enum PlayerState
 {
     RunState,
     IdleState,
+    JumpState
 }
 public class Player : Agent
 {
@@ -26,6 +27,7 @@ public class Player : Agent
 
         stateMachine.AddState(PlayerState.IdleState, new IdleState(this, stateMachine));
         stateMachine.AddState(PlayerState.RunState, new WalkState(this, stateMachine));
+        stateMachine.AddState(PlayerState.JumpState, new JumpState(this, stateMachine));
         stateMachine.InitInitialize(PlayerState.IdleState, this);
         base.Awake();
     }
@@ -42,6 +44,8 @@ public class Player : Agent
 
         if (Input.GetKey(KeyCode.W))
             stateMachine.ChangeState(playerState = PlayerState.RunState);
+        else if (Input.GetKeyDown(KeyCode.Space))
+            stateMachine.ChangeState(playerState = PlayerState.JumpState);
         else
             stateMachine.ChangeState(playerState = PlayerState.IdleState);
     }

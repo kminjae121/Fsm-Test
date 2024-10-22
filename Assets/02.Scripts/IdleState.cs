@@ -15,11 +15,11 @@ public class IdleState : State<PlayerState>
     public override void Enter()
     {
         _rigid = _owner.GetComponent<Rigidbody2D>();
+        _rigid.velocity = Vector2.zero;
     }
     public override void UpdateState()
     {
         Debug.Log("æ∆¿’ª–");
-        _rigid.velocity = Vector2.zero;
         
     }
 
